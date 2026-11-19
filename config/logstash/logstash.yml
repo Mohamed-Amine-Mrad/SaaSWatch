@@ -1,2 +1,4 @@
 api.http.host: "0.0.0.0"
 pipeline.ecs_compatibility: v8
+pipeline.workers: 1
+pipeline.batch.size: 50

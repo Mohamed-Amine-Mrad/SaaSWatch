@@ -34,14 +34,14 @@ services:
     image: docker.elastic.co/logstash/logstash:${ELASTIC_VERSION}
     container_name: saaswatch-logstash
     environment:
-      LS_JAVA_OPTS: "-Xms512m -Xmx512m"
+      LS_JAVA_OPTS: "-Xms256m -Xmx256m"
     volumes:
       - ./config/logstash/logstash.yml:/usr/share/logstash/config/logstash.yml:ro
       - ./config/logstash/pipeline:/usr/share/logstash/pipeline:ro
     ports:
       - "127.0.0.1:9600:9600"
       - "127.0.0.1:8080:8080"
-    mem_limit: 1200m
+    mem_limit: 800m
     depends_on:
       elasticsearch:
         condition: service_healthy
@@ -62,11 +62,57 @@ services:
       elasticsearch:
         condition: service_healthy
     networks:
+    - saaswatch-network
+
+  mongodb:
+    image: mongo:7.0
+    container_name: saaswatch-mongodb
+    restart: unless-stopped
+    command: ["mongod", "--wiredTigerCacheSizeGB", "0.25"]
+    volumes:
+      - mongodb_data:/data/db
+    mem_limit: 512m
+    healthcheck:
+      test:
+        - CMD
+        - mongosh
+        - --quiet
+        - --eval
+        - "db.adminCommand('ping').ok"
+      interval: 15s
+      timeout: 10s
+      retries: 5
+      start_period: 30s
+    networks:
+      - saaswatch-network
+
+  redis:
+    image: redis:7-alpine
+    container_name: saaswatch-redis
+    restart: unless-stopped
+    command:
+      - redis-server
+      - --save
+      - ""
+      - --appendonly
+      - "no"
+      - --maxmemory
+      - 128mb
+      - --maxmemory-policy
+      - allkeys-lru
+    mem_limit: 256m
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    networks:
       - saaswatch-network
 
 volumes:
   elasticsearch_data:
-
+  mongodb_data:
 networks:
   saaswatch-network:
     driver: bridge
