@@ -229,3 +229,22 @@ Future development:
 - Log search and filtering.
 - Log upload and processing.
 - Monitoring dashboards and analytics.
+
+## 17. Service Startup Dependencies
+
+Docker Compose uses service dependencies and health checks to coordinate startup.
+
+| Service | Startup Dependency | Condition |
+|---|---|---|
+| Elasticsearch | None | Independent |
+| Logstash | Elasticsearch | service_healthy |
+| Kibana | Elasticsearch | service_healthy |
+| MongoDB | None | Independent |
+| Redis | None | Independent |
+| Flask API | Elasticsearch | service_healthy |
+| Flask API | MongoDB | service_healthy |
+| Flask API | Redis | service_healthy |
+
+Logstash and Kibana depend on Elasticsearch availability.
+
+Flask waits for Elasticsearch, MongoDB and Redis health checks before starting. Logstash connectivity is monitored through the Flask health endpoint.
