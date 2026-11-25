@@ -110,6 +110,44 @@ services:
     networks:
       - saaswatch-network
 
+  flask:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: saaswatch-api:1.0.0
+    container_name: saaswatch-flask
+    restart: unless-stopped
+    environment:
+      FLASK_ENV: development
+      ELASTICSEARCH_URL: http://elasticsearch:9200
+      MONGODB_URL: mongodb://mongodb:27017
+      MONGODB_DATABASE: saaswatch
+      REDIS_URL: redis://redis:6379/0
+      LOGSTASH_URL: http://logstash:8080
+    ports:
+      - "127.0.0.1:5000:5000"
+    mem_limit: 256m
+    depends_on:
+      elasticsearch:
+        condition: service_healthy
+      mongodb:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    healthcheck:
+      test:
+        - CMD
+        - python
+        - -c
+        - "import urllib.request; urllib.request.urlopen('http://localhost:5000/health', timeout=3)"
+      interval: 20s
+      timeout: 5s
+      retries: 3
+      start_period: 30s
+    networks:
+      - saaswatch-network
+
+
 volumes:
   elasticsearch_data:
   mongodb_data:
