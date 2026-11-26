@@ -1,4 +1,4 @@
-timestamp,level,service,environment,host,source_ip,method,endpoint,status_code,response_time_ms,message,user_id,request_id
-2026-11-23T03:53:31.000Z,INFO,payment-service,production,server-01,192.168.140.208,GET,/api/notifications,200,1738,Request processed successfully,user_008,9bec3b31-6cbb-51bd-952e-64a416724157
-NOT_A_TIMESTAMP,INFO,notification-service,production,server-02,10.52.122.63,DELETE,/api/users,INVALID,1849,Subscription created,user_002,4db21e24-7ae0-55b4-bd20-782c47f77310
+timestamp,level,service,environment,host,source_ip,method,endpoint,status_code,response_time_ms,message,user_id,request_id,event_type,database_operation,database_name,cpu_usage_percent,memory_usage_mb,business_action,business_value,sql_query,query_duration_ms,session_id,session_event,feature_name
+2026-11-20T19:07:42.000Z,WARNING,api-gateway,production,server-03,192.168.140.208,,,,2905,Memory consumption above threshold,user_180,9bec3b31-6cbb-51bd-952e-64a416724157,performance,,,85.8,391,,,,,,,
+NOT_A_TIMESTAMP,WARNING,user-service,production,server-02,10.52.122.63,,,INVALID,1751,Database query executed,user_140,4db21e24-7ae0-55b4-bd20-782c47f77310,database,INSERT,payments_db,,,,,"INSERT INTO payments (user_id, amount) VALUES (?, ?)",1170,,,
 "broken CSV record
