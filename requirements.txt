@@ -4,3 +4,4 @@ elasticsearch>=8.15,<9.0
 pymongo>=4.9,<5.0
 redis>=5.0,<6.0
 requests>=2.32,<3.0
+Faker>=30.0,<40.0

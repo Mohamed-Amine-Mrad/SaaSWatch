@@ -1,0 +1,4 @@
+timestamp,level,service,environment,host,source_ip,method,endpoint,status_code,response_time_ms,message,user_id,request_id
+2026-11-23T03:53:31.000Z,INFO,payment-service,production,server-01,192.168.140.208,GET,/api/notifications,200,1738,Request processed successfully,user_008,9bec3b31-6cbb-51bd-952e-64a416724157
+NOT_A_TIMESTAMP,INFO,notification-service,production,server-02,10.52.122.63,DELETE,/api/users,INVALID,1849,Subscription created,user_002,4db21e24-7ae0-55b4-bd20-782c47f77310
+"broken CSV record
